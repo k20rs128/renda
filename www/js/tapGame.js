@@ -68,10 +68,14 @@ function countTime(time) {
     } else if (time == 10) {
       this.tapFlag = true;
       $("#list-page p").html("スタート！");
-    } else {
+    } else if (time>=7){
       this.tapFlag = true;
       $("#list-page p").html(String(time));
+    }else{
+      this.tapFlag=true;
+      $("#list-page p").html("???");
     }
+    
     this.countTimer -= 1;
     // １秒後にcountTime()を呼び出す
     setTimeout("countTime(countTimer)", 1000);
