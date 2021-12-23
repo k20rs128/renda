@@ -18,15 +18,19 @@ function toRanking() {
 function checkRanking() {
   // **********【問題２】ランキングを表示しよう！**********
   var highScore = ncmb.DataStore("GameScore");
-  highScore.order("score", true)
-    .limit(5).fetchAll()
-    .then(function (results) {
-      console.log("検索に成功しました。");
-      setData(results);
-    })
-    .catch(function (error) {
-      console.log("検索に失敗しました。エラー:" + error);
-    });
+  highScore.order("score", false)
+         .limit(5)
+         .fetchAll()
+         .then(function(results){
+             // 検索に成功した場合の処理
+             console.log("検索に成功しました。");
+             // テーブルにデータをセット
+             setData(results);
+         })
+         .catch(function(error){
+             // 検索に失敗した場合の処理
+             console.log("検索に失敗しました。エラー:" +error);
+         });
 
 
 
@@ -50,7 +54,7 @@ function setData(array) {
     name.innerHTML = array[i].name + "さん";
     // スコアの設定
     var score = table.rows[i].cells[2];
-    score.innerHTML = array[i].score + "連打";
+    score.innerHTML = array[i].score + "秒";
   }
 }
 

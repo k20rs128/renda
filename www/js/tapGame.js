@@ -27,9 +27,9 @@ function startGame() {
 
   // タップカウンターリセット
   this.counter = 0;
-  $("#list-page strong").html(String(0));
+  $("#list-page strong").html(String(""));
   // タイマーリセット
-  this.countTimer = 13;
+  this.countTimer = 13.0;
   // タイマーを起動
   countTime(countTimer);
 }
@@ -58,54 +58,67 @@ function saveScore(name, score) {
 
   // ********************************************************
 }
-
 // タイマー
 function countTime(time) {
-  if (time > 0) {
-    if (time >= 11) {
-      this.tapFlag = false;
-      $("#list-page p").html(String(time - 10));
-    } else if (time == 10) {
-      this.tapFlag = true;
-      $("#list-page p").html("スタート！");
-    } else if (time>=7){
-      this.tapFlag = true;
-      $("#list-page p").html(String(time));
-    }else{
-      this.tapFlag=true;
-      $("#list-page p").html("???");
-    }
-    
-    this.countTimer -= 1;
-    // １秒後にcountTime()を呼び出す
-    setTimeout("countTime(countTimer)", 1000);
-  } else {
+  if (counter >= 1) {
     this.tapFlag = false;
-    $("#list-page p").html("タイムアップ！");
-    imputName(this.counter);
+
+    imputName(this.countTimer);
+  } else {
+    if (time >= 0) {
+      if (time >= 11) {
+        this.tapFlag = false;
+        $("#list-page p").html("０秒過ぎると失格です");
+      } else if (time == 10) {
+        this.tapFlag = true;
+        $("#list-page p").html("スタート！");
+      } else if (time >= 7) {
+        this.tapFlag = true;
+        $("#list-page p").html(String(time));
+      } else {
+        this.tapFlag = true;
+        $("#list-page p").html("???");
+      }
+      this.countTimer -= 1;
+      // １秒後にcountTime()を呼び出す
+      setTimeout("countTime(countTimer)", 1000);
+    } else {
+      this.tapFlag = false;
+
+      imputName(this.countTimer);
+    }
   }
 }
 
+
 // 名前入力アラートの表示
-function imputName(count) {
-  // 入力アラートを表示
-  var name = window.prompt("名前を入力してください", "");
-  if (name == null || name == "") {
-    $("#list-page p").html("保存がキャンセルされました");
+function imputName(countTimer) {
+  if (countTimer < 0) {
+    $("#list-page p").html("失格です。");
+
+    document.gameForm.start.disabled = false;
+    document.gameForm.ranking.disabled = false;
   } else {
-    // スコアと入力した名前を保存
-    saveScore(name, count);
-    $("#list-page p").html(name + "さんのスコアは" + String(count) + "連打でした");
+    // 入力アラートを表示
+    var name = window.prompt("名前を入力してください", "");
+    if (name == null || name == "") {
+      $("#list-page p").html("保存がキャンセルされました");
+    } else {
+
+      // スコアと入力した名前を保存
+      saveScore(name, countTimer);
+      $("#list-page p").html(name + "さんのスコアは" + String(countTimer) + "秒でした");
+    }
+    // ボタンの有効化
+    document.gameForm.start.disabled = false;
+    document.gameForm.ranking.disabled = false;
   }
-  // ボタンの有効化
-  document.gameForm.start.disabled = false;
-  document.gameForm.ranking.disabled = false;
 }
+
 
 // タップ数カウント
 function tapCount() {
   if (tapFlag) {
     this.counter += 1;
-    $("#list-page strong").html(String(this.counter));
   }
 }
