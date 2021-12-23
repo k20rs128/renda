@@ -20,19 +20,23 @@ var counter = 0;
 var tapFlag = false;
 
 // 「Start」ボタン押下時の処理
-function startGame() {
-  // ボタンの無効化
-  document.gameForm.start.disabled = true;
-  document.gameForm.ranking.disabled = true;
-
-  // タップカウンターリセット
-  this.counter = 0;
-  $("#list-page strong").html(String(""));
-  // タイマーリセット
-  this.countTimer = 13.0;
-  // タイマーを起動
-  countTime(countTimer);
+function easyGame() {
+    // ボタンの無効化
+    document.gameForm.start.disabled = true;
+    document.gameForm.ranking.disabled = true;
+    
+    // タップカウンターリセット
+    this.counter = 0;
+    $("#list-page strong").html("10秒");
+    // タイマーリセット
+    this.countTimer = 13;
+    // タイマーを起動
+    countTime(countTimer);
 }
+
+
+
+
 
 // 【mBaaS】データの保存
 function saveScore(name, score) {
@@ -89,6 +93,7 @@ function countTime(time) {
     }
   }
 }
+
 
 
 // 名前入力アラートの表示
